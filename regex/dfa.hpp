@@ -45,6 +45,9 @@ class DFA
     MatchResult partial_search(std::string_view text);
     std::string replace(std::string_view text, std::string_view replace_pattern);
 
+    static bool build(std::string_view re);
+    static void destroy();
+
   private:
     // const DFASet &get() const { return ds_; }
     void parse(std::string_view re);
