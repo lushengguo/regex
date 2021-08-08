@@ -1,15 +1,27 @@
 #ifndef __REGEX_HPP__
 #define __REGEX_HPP__
+#include "dfa.hpp"
+#include "match_result.hpp"
+#include <memory>
 #include <string_view>
 namespace regex
 {
-class MatchResult;
-class Regex;
+class Regex
+{
+  public:
+    bool build_NFA();
+    bool build_DFA();
 
-bool regex_match(Regex pattern, MatchResult result, std::string_view str);
+  private:
+    std::string pattern_;
+};
 
-bool regex_search(Regex pattern, MatchResult result, std::string_view str);
-
-bool regex_replace(Regex pattern, std::string_view str, std::string_view format);
+class RegexApi
+{
+  public:
+    virtual bool regex_match(std::string_view s, Regex re) = 0;
+    virtual std::string regex_replace(std::string_view s, Regex re, std::string_view pattern) = 0;
+    virtual std::unique_ptr<MatchResult> regex_search(std::string_view s, Regex re) = 0;
+};
 } // namespace regex
 #endif

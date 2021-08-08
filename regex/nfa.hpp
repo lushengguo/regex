@@ -1,51 +1,43 @@
 #ifndef __NFA_HPP__
 #define __NFA_HPP__
-
-#include "match_result.hpp"
+#include "regex.hpp"
+#include "regexp_tree.hpp"
+#include <map>
 #include <set>
-#include <string_view>
-#include <unordered_map>
+
 namespace regex
 {
-
-typedef std::string Regex;
-
-class StateMachine
-{
-  public:
-    typedef char CharType;
-    typedef int ID;
-    typedef std::unordered_map<CharType, ID> JumpConditions;
-    typedef std::unordered_map<ID, JumpConditions> Machine;
-
-    StateMachine() : biggest_(0) {}
-    ~StateMachine() = default;
-
-    ID append_jump_condition(ID id, CharType jump_char);
-    bool ok() const { return machine_.size() > 1; }
-
-  private:
-    Machine machine_;
-    ID biggest_;
-};
-
 class NFA
 {
   public:
-    enum MatchFlag
+    NFA() : terminate_(false) {}
+
+    const std::set<ID> *accept(char ch) const
     {
-        kFullMatch,
-        kPartialMatch
-    };
-    bool regex_match(std::string_view str, const Regex &, MatchFlag = kFullMatch);
+        return accept_map_.count(ch) ? &accept_map_.at(ch) : nullptr;
+    }
+    bool is_terminate() const { return terminate_; }
+    ID id() const { return id_; }
+
+    static bool build(std::string_view re);
+    static const NFA *start() { return nfas.count(0) == 1 ? nfas.at(0) : nullptr; }
+    static const NFA *nfa(ID id) { return nfas.at(id); }
 
   private:
-    StateMachine compile(const Regex &);
-    MatchResult search(std::string_view str, const Regex &, MatchFlag);
-    MatchResult full_search(std::string_view str, const StateMachine &);
-    MatchResult partial_search(std::string_view str, const StateMachine &);
+    static std::map<ID, const NFA *> nfas;
 
-    std::string format(const MatchResult &, std::string_view format);
+    ID id_;
+    std::map<char, std::set<ID>> accept_map_;
+    bool terminate_;
+};
+
+class RegexNFA : RegexApi
+{
+  public:
+    bool regex_match(std::string_view s, Regex re) override;
+    std::string regex_replace(std::string_view s, Regex re, std::string_view pattern) override;
+    std::unique_ptr<MatchResult> regex_search(std::string_view s, Regex re) override;
 };
 } // namespace regex
+
 #endif
