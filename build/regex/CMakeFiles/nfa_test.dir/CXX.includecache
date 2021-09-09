@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../regex/nfa2.hpp
+regex/regexp.hpp
+../regex/regex/regexp.hpp
+unordered_set
+-
+
+../regex/regexp.hpp
+list
+-
+map
+-
+memory
+-
+set
+-
+string
+-
+string_view
+-
+
+/Users/shengguolu/code/regex/regex/nfa2_test.cpp
+regex/nfa2.hpp
+/Users/shengguolu/code/regex/regex/regex/nfa2.hpp
+iostream
+-
+

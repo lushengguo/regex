@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../regex/util.hpp
+algorithm
+-
+functional
+-
+iostream
+-
+list
+-
+string
+-
+string_view
+-
+
+/Users/shengguolu/code/regex/regex/util_test.cpp
+regex/util.hpp
+/Users/shengguolu/code/regex/regex/regex/util.hpp
+iostream
+-
+sstream
+-
+stdlib.h
+-
+
